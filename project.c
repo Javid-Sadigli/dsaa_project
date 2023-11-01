@@ -25,7 +25,10 @@ void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
 
 int alphaOrder(const char *name1, const char *name2);
 
+void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
+
 int countelector(T_Elector head);
+
 int findelector(T_Elector head, long cin_num);
 
 int main(int argc, char const *argv[])
@@ -35,7 +38,7 @@ int main(int argc, char const *argv[])
     displaylist(head);
     printf("\n");
     printf("You have %d voters\n", countelector(head));
-    printf("%d", findelector(head,1));
+    printf("%d", findelector(head, 1));
     return 0;
 }
 
@@ -123,16 +126,85 @@ int countelector(T_Elector head)
 
 int findelector(T_Elector head, long cin_num)
 {
-    T_Elector voter=head;
-    while(voter!=NULL)
+    T_Elector voter = head;
+    while (voter != NULL)
     {
-        if(voter->cin_num==cin_num)
+        if (voter->cin_num == cin_num)
         {
             printf("{Name : %s, ID number : %ld, Choice : %d} -> ", voter->name, voter->cin_num, voter->choice);
             return 1;
         }
-        voter=voter->next;
+        voter = voter->next;
     }
     printf("Voter does not exist in the list\n");
     return 0;
+}
+
+
+void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite)
+{
+    T_Elector voter = head;
+    T_Elector left = NULL;
+    T_Elector right = NULL;
+    T_Elector white = NULL;
+    while (voter != NULL)
+    {
+        if (voter->choice == 1 || voter->choice == 3)
+        {
+            // Add the voter to the left list
+            if (*headLeft == NULL)
+            {
+                *headLeft = voter;
+                left = voter;
+            }
+            else
+            {
+                left->next = voter;
+                left = voter;
+            }
+        }
+        else if (voter->choice == 2 || voter->choice == 4)
+        {
+            // Add the voter to the right list
+            if (*headRight == NULL)
+            {
+                *headRight = voter;
+                right = voter;
+            }
+            else
+            {
+                right->next = voter;
+                right = voter;
+            }
+        }
+        else
+        {
+            // Add the voter to the white list
+            if (*headWhite == NULL)
+            {
+                *headWhite = voter;
+                white = voter;
+            }
+            else
+            {
+                white->next = voter;
+                white = voter;
+            }
+        }
+        voter = voter->next;
+    }
+
+    // Make sure to terminate the lists
+    if (left != NULL)
+    {
+        left->next = NULL;
+    }
+    if (right != NULL)
+    {
+        right->next = NULL;
+    }
+    if (white != NULL)
+    {
+        white->next = NULL;
+    }
 }
