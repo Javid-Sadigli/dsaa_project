@@ -19,9 +19,11 @@ T_Elector creation_T_Elector_Linked_List();
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
 void displaylist(T_Elector head);
 void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice);
+void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
 int alphaOrder(const char *name1, const char *name2);
 int countelector(T_Elector head);
 void deletelector(T_Elector * head, long cin_num);
+int findelector(T_Elector head, long cin_num);
 
 int main(int argc, char const *argv[])
 {
@@ -30,13 +32,14 @@ int main(int argc, char const *argv[])
     deletelector(&head, 123);
     displaylist(head);
     printf("\n");
-    printf("You have %d voters", countelector(head));
+    printf("You have %d voters\n", countelector(head));
+    printf("%d", findelector(head,1));
     return 0;
 }
 
-void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice)
+void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 {
-    T_Elector newVoter = (T_Elector)malloc(sizeof(elector));
+    T_Elector newVoter = (T_Elector) malloc(sizeof(elector));
     strcpy(newVoter->name, name);
     newVoter->choice = choice;
     newVoter->cin_num = cin_num;
@@ -106,18 +109,27 @@ int alphaOrder(const char *name1, const char *name2)
 
 int countelector(T_Elector head)
 {
-    T_Elector voter=head;
-    int count=0;
-    while(voter!=NULL)
+    T_Elector voter = head;
+    int count = 0;
+    while (voter != NULL)
     {
         count++;
-        voter=voter->next;
+        voter = voter->next;
     }
     return count;
 }
+
 void deletelector(T_Elector * head, long cin_num)
 {
     T_Elector ptr_to_deleting_voter = *head;
+
+    if(ptr_to_deleting_voter->cin_num == cin_num)
+    {
+        (*head) = ptr_to_deleting_voter->next;
+        free(ptr_to_deleting_voter);
+        return;
+    }
+
     T_Elector deleting_voter = ptr_to_deleting_voter->next;
     
     while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
@@ -133,4 +145,21 @@ void deletelector(T_Elector * head, long cin_num)
 
     ptr_to_deleting_voter->next = deleting_voter->next;
     free(deleting_voter);
+}
+
+
+int findelector(T_Elector head, long cin_num)
+{
+    T_Elector voter=head;
+    while(voter!=NULL)
+    {
+        if(voter->cin_num==cin_num)
+        {
+            printf("{Name : %s, ID number : %ld, Choice : %d} ", voter->name, voter->cin_num, voter->choice);
+            return 1;
+        }
+        voter=voter->next;
+    }
+    printf("Voter does not exist in the list\n");
+    return 0;
 }
