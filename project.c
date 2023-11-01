@@ -25,11 +25,12 @@ int countelector(T_Elector head);
 int findelector(T_Elector head, long cin_num);
 void deletelector(T_Elector *head, long cin_num);
 void sortlist(T_Elector head);
+void freelist(T_Elector head);
 
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
-
+    displaylist(head);
     T_Elector headRight = NULL;
     T_Elector headLeft = NULL;
     T_Elector headWhite = NULL;
@@ -42,10 +43,25 @@ int main(int argc, char const *argv[])
     displaylist(headLeft);
     displaylist(headRight);
     displaylist(headWhite);
+    freelist(head);
+    printf("Freed list : \n");
+    displaylist(head); 
     printf("\n");
     //printf("You have %d voters\n", countelector(head));
     //printf("%d", findelector(head, 1));
     return 0;
+}
+
+void freelist(T_Elector head)
+{
+    T_Elector deleting_voter = head;
+    while (deleting_voter->next != NULL)
+    {
+        head = head->next;
+        free(deleting_voter);
+        deleting_voter = head;
+    }
+    free(deleting_voter);
 }
 
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
@@ -204,7 +220,6 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         }
         voter = voter->next;
     }
-
 
     if (left != NULL)
     {
