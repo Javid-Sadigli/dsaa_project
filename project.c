@@ -20,13 +20,15 @@ void displaylist(T_Elector head);
 void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice);
 
 int alphaOrder(const char *name1, const char *name2);
-
+int countelector(T_Elector head);
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
     displaylist(head);
-    addelector(&head, "John", 212, 2);
+
     displaylist(head);
+    printf("\n");
+    printf("You have %d voters", countelector(head));
     return 0;
 }
 
@@ -35,7 +37,7 @@ void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice)
     T_Elector newVoter = (T_Elector)malloc(sizeof(elector));
     strcpy(newVoter->name, name);
     newVoter->choice = choice;
-    newVoter->cin_num = cin_num; 
+    newVoter->cin_num = cin_num;
     *ptr_to_head = insertSorted(*ptr_to_head, newVoter);
 }
 
@@ -98,4 +100,17 @@ T_Elector insertSorted(T_Elector head, T_Elector newVoter)
 int alphaOrder(const char *name1, const char *name2)
 {
     return strcmp(name1, name2);
+}
+
+int countelector(T_Elector head)
+{
+    T_Elector voter=head;
+    int count=0;
+    while(voter!=NULL)
+    {
+        count++;
+        voter=voter->next;
+    }
+    return count;
+
 }
