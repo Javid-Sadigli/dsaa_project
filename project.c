@@ -26,16 +26,26 @@ void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
 int alphaOrder(const char *name1, const char *name2);
 
 int countelector(T_Elector head);
+
 int findelector(T_Elector head, long cin_num);
+
+void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
 
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
+    T_Elector headRight=NULL;
+    T_Elector headLeft=NULL;
+    T_Elector headWhite=NULL;
+    decomposelist(head,&headLeft,&headRight,&headWhite);
     displaylist(head);
-    displaylist(head);
+    displaylist(headRight);
+    displaylist(headLeft);
+    displaylist(headWhite);
+
     printf("\n");
     printf("You have %d voters\n", countelector(head));
-    printf("%d", findelector(head,1));
+    printf("%d", findelector(head, 1));
     return 0;
 }
 
@@ -67,7 +77,12 @@ T_Elector creationelector()
     printf("Enter the new voter's ID number: ");
     scanf("%ld", &(voter->cin_num));
     printf("Enter the new voter's choice: ");
-    scanf("%d", &(voter->choice));
+    printf("NAME1: 1\n");
+    printf("NAME2: 2\n");
+    printf("NAME3: 3\n");
+    printf("NAME4: 4\n");
+    printf("Other: 5\n");
+    scanf("%d", &voter->choice);
     voter->next = NULL;
     return voter;
 }
@@ -123,16 +138,79 @@ int countelector(T_Elector head)
 
 int findelector(T_Elector head, long cin_num)
 {
-    T_Elector voter=head;
-    while(voter!=NULL)
+    T_Elector voter = head;
+    while (voter != NULL)
     {
-        if(voter->cin_num==cin_num)
+        if (voter->cin_num == cin_num)
         {
             printf("{Name : %s, ID number : %ld, Choice : %d} -> ", voter->name, voter->cin_num, voter->choice);
             return 1;
         }
-        voter=voter->next;
+        voter = voter->next;
     }
     printf("Voter does not exist in the list\n");
     return 0;
+}
+
+void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite)
+{
+    T_Elector voter = head;
+    T_Elector left = NULL;
+    T_Elector right = NULL;
+    T_Elector white = NULL;
+    while (voter != NULL)
+    {
+        if (voter->choice == 1 || voter->choice == 3)
+        {
+            if (*headLeft == NULL)
+            {
+                *headLeft = voter;
+                left = voter;
+            }
+            else
+            {
+                left->next = voter;
+                left = voter;
+            }
+        }
+        else if (voter->choice == 2 || voter->choice == 4)
+        {
+            if (*headRight == NULL)
+            {
+                *headRight = voter;
+                right = voter;
+            }
+            else
+            {
+                right->next = voter;
+                right = voter;
+            }
+        }
+        else
+        {
+            if (*headWhite == NULL)
+            {
+                *headWhite = voter;
+                white = voter;
+            }
+            else
+            {
+                white->next = voter;
+                white = voter;
+            }
+        }
+        voter = voter->next;
+    }
+    if (left != NULL)
+    {
+        left->next = NULL;
+    }
+    if (right != NULL)
+    {
+        right->next = NULL;
+    }
+    if (white != NULL)
+    {
+        white->next = NULL;
+    }
 }
