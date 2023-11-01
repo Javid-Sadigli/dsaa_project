@@ -16,7 +16,7 @@ T_Elector creation_T_Elector_Linked_List();
 
 int main(int argc, char const *argv[])
 {
-    creation_T_Elector_Linked_List();
+    T_Elector head= creation_T_Elector_Linked_List();
     return 0;
 }
 
