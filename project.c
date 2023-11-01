@@ -14,27 +14,34 @@ typedef struct elector
 typedef elector *T_Elector;
 
 T_Elector creationelector();
+
 T_Elector creation_T_Elector_Linked_List();
+
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
+
 void displaylist(T_Elector head);
-void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice);
+
+void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
 
 int alphaOrder(const char *name1, const char *name2);
+
 int countelector(T_Elector head);
+int findelector(T_Elector head, long cin_num);
+
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
     displaylist(head);
-
     displaylist(head);
     printf("\n");
-    printf("You have %d voters", countelector(head));
+    printf("You have %d voters\n", countelector(head));
+    printf("%d", findelector(head,1));
     return 0;
 }
 
-void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice)
+void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 {
-    T_Elector newVoter = (T_Elector)malloc(sizeof(elector));
+    T_Elector newVoter = (T_Elector) malloc(sizeof(elector));
     strcpy(newVoter->name, name);
     newVoter->choice = choice;
     newVoter->cin_num = cin_num;
@@ -104,13 +111,28 @@ int alphaOrder(const char *name1, const char *name2)
 
 int countelector(T_Elector head)
 {
-    T_Elector voter=head;
-    int count=0;
-    while(voter!=NULL)
+    T_Elector voter = head;
+    int count = 0;
+    while (voter != NULL)
     {
         count++;
-        voter=voter->next;
+        voter = voter->next;
     }
     return count;
+}
 
+int findelector(T_Elector head, long cin_num)
+{
+    T_Elector voter=head;
+    while(voter!=NULL)
+    {
+        if(voter->cin_num==cin_num)
+        {
+            printf("{Name : %s, ID number : %ld, Choice : %d} -> ", voter->name, voter->cin_num, voter->choice);
+            return 1;
+        }
+        voter=voter->next;
+    }
+    printf("Voter does not exist in the list\n");
+    return 0;
 }
