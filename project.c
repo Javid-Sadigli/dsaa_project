@@ -75,13 +75,13 @@ T_Elector creationelector()
     scanf("%s", voter->name);
     printf("Enter the new voter's ID number: ");
     scanf("%ld", &(voter->cin_num));
-    printf("Enter the new voter's choice: ");
-    printf("\n");
+    printf("The options for new voter's choice are as below: \n");
     printf("NAME1: 1\n");
     printf("NAME2: 2\n");
     printf("NAME3: 3\n");
     printf("NAME4: 4\n");
     printf("NAME5: 5\n");
+    printf("Enter the new voter's choice: ");
     scanf("%d", &(voter->choice));
     voter->next = NULL;
     return voter;
