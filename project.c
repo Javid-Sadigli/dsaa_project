@@ -15,17 +15,31 @@ typedef elector *T_Elector;
 
 // Function prototypes
 T_Elector creationelector();
+
 T_Elector creation_T_Elector_Linked_List();
+
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
+
 void displaylist(T_Elector head);
+
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
+
 int alphaOrder(const char *name1, const char *name2);
+
 void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
+
 int countelector(T_Elector head);
+
 int findelector(T_Elector head, long cin_num);
+
 void deletelector(T_Elector *head, long cin_num);
+
 void sortlist(T_Elector head);
 void freelist(T_Elector head);
+
+T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
+
+int countLR(T_Elector headLeft);
 
 int main(int argc, char const *argv[])
 {
@@ -37,8 +51,14 @@ int main(int argc, char const *argv[])
     decomposelist(head, &headLeft, &headRight, &headWhite);
     sortlist(head);
     sortlist(headWhite);
+    //displaylist(headWhite);
     sortlist(headRight);
+    //displaylist(headRight);
     sortlist(headLeft);
+    //displaylist(headLeft);
+    displaylist(head);
+    //freelist(head);
+    printf("Freed list : \n");
     displaylist(head);
     displaylist(headLeft);
     displaylist(headRight);
@@ -179,7 +199,6 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
     {
         if (voter->choice == 1 || voter->choice == 3)
         {
-            // Add the voter to the left list
             if (*headLeft == NULL)
             {
                 *headLeft = voter;
@@ -206,7 +225,6 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         }
         else
         {
-
             if (*headWhite == NULL)
             {
                 *headWhite = voter;
@@ -287,4 +305,40 @@ void sortlist(T_Elector head)
             }
         }
     }
+}
+
+
+T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
+{
+    T_Elector voterLeft = headLeft;
+    if (headLeft == NULL || headRight == NULL)
+    {
+        printf("At least one of your lists doesn't exist\n");
+        return headLeft;
+    }
+    else
+    {
+        while (voterLeft->next != NULL)
+        {
+            voterLeft = voterLeft->next;
+        }
+        voterLeft->next = headRight;
+    }
+    sortlist(headLeft);
+    return headLeft;
+}
+
+int countLR(T_Elector headLeft)
+{
+    T_Elector voter = headLeft;
+    int countLeftVoter = 0;
+    while (voter != NULL)
+    {
+        if (voter->choice == 1 || voter->choice == 3)
+        {
+            countLeftVoter++;
+        }
+        voter = voter->next;
+    }
+    return countLeftVoter;
 }
