@@ -14,22 +14,15 @@ typedef struct elector
 typedef elector *T_Elector;
 
 T_Elector creationelector();
-
 T_Elector creation_T_Elector_Linked_List();
-
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
-
 void displaylist(T_Elector head);
-
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
-
 int alphaOrder(const char *name1, const char *name2);
-
 void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
-
 int countelector(T_Elector head);
-
 int findelector(T_Elector head, long cin_num);
+void deletelector(T_Elector * head, long cin_num);
 
 int main(int argc, char const *argv[])
 {
@@ -207,4 +200,31 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
     {
         white->next = NULL;
     }
+}
+void deletelector(T_Elector * head, long cin_num)
+{
+    T_Elector ptr_to_deleting_voter = *head;
+
+    if(ptr_to_deleting_voter->cin_num == cin_num)
+    {
+        (*head) = ptr_to_deleting_voter->next;
+        free(ptr_to_deleting_voter);
+        return;
+    }
+
+    T_Elector deleting_voter = ptr_to_deleting_voter->next;
+    
+    while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
+    {
+        ptr_to_deleting_voter = ptr_to_deleting_voter->next;
+        deleting_voter = ptr_to_deleting_voter->next;
+    }
+    
+    if(deleting_voter == NULL)
+    {
+        return;
+    }
+
+    ptr_to_deleting_voter->next = deleting_voter->next;
+    free(deleting_voter);
 }
