@@ -13,19 +13,21 @@ typedef struct elector
 
 typedef elector *T_Elector;
 
+// Function prototypes
 T_Elector creationelector();
 T_Elector creation_T_Elector_Linked_List();
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
 void displaylist(T_Elector head);
 void addelector(T_Elector * ptr_to_head, char name[], long cin_num, int choice);
-
 int alphaOrder(const char *name1, const char *name2);
 int countelector(T_Elector head);
+void deletelector(T_Elector * head, long cin_num);
+
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
     displaylist(head);
-
+    deletelector(&head, 123);
     displaylist(head);
     printf("\n");
     printf("You have %d voters", countelector(head));
@@ -112,5 +114,23 @@ int countelector(T_Elector head)
         voter=voter->next;
     }
     return count;
+}
+void deletelector(T_Elector * head, long cin_num)
+{
+    T_Elector ptr_to_deleting_voter = *head;
+    T_Elector deleting_voter = ptr_to_deleting_voter->next;
+    
+    while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
+    {
+        ptr_to_deleting_voter = ptr_to_deleting_voter->next;
+        deleting_voter = ptr_to_deleting_voter->next;
+    }
+    
+    if(deleting_voter == NULL)
+    {
+        return;
+    }
 
+    ptr_to_deleting_voter->next = deleting_voter->next;
+    free(deleting_voter);
 }
