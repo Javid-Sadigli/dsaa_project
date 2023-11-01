@@ -14,24 +14,46 @@ typedef struct elector
 typedef elector *T_Elector;
 
 T_Elector creationelector();
+
 T_Elector creation_T_Elector_Linked_List();
+
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
+
 void displaylist(T_Elector head);
+
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
+
 int alphaOrder(const char *name1, const char *name2);
+
 void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
+
 int countelector(T_Elector head);
+
 int findelector(T_Elector head, long cin_num);
-void deletelector(T_Elector * head, long cin_num);
+
+void deletelector(T_Elector *head, long cin_num);
+
+void sortlist(T_Elector head);
 
 int main(int argc, char const *argv[])
 {
     T_Elector head = creation_T_Elector_Linked_List();
+
+    T_Elector headRight = NULL;
+    T_Elector headLeft = NULL;
+    T_Elector headWhite = NULL;
+    decomposelist(head, &headLeft, &headRight, &headWhite);
+    sortlist(head);
+    sortlist(headWhite);
+    sortlist(headRight);
+    sortlist(headLeft);
     displaylist(head);
-    displaylist(head);
+    displaylist(headLeft);
+    displaylist(headRight);
+    displaylist(headWhite);
     printf("\n");
-    printf("You have %d voters\n", countelector(head));
-    printf("%d", findelector(head, 1));
+    //printf("You have %d voters\n", countelector(head));
+    //printf("%d", findelector(head, 1));
     return 0;
 }
 
@@ -63,6 +85,12 @@ T_Elector creationelector()
     printf("Enter the new voter's ID number: ");
     scanf("%ld", &(voter->cin_num));
     printf("Enter the new voter's choice: ");
+    printf("\n");
+    printf("NAME1: 1\n");
+    printf("NAME2: 2\n");
+    printf("NAME3: 3\n");
+    printf("NAME4: 4\n");
+    printf("NAME5: 5\n");
     scanf("%d", &(voter->choice));
     voter->next = NULL;
     return voter;
@@ -158,7 +186,6 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         }
         else if (voter->choice == 2 || voter->choice == 4)
         {
-            // Add the voter to the right list
             if (*headRight == NULL)
             {
                 *headRight = voter;
@@ -172,7 +199,7 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         }
         else
         {
-            // Add the voter to the white list
+
             if (*headWhite == NULL)
             {
                 *headWhite = voter;
@@ -187,7 +214,7 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         voter = voter->next;
     }
 
-    // Make sure to terminate the lists
+
     if (left != NULL)
     {
         left->next = NULL;
@@ -201,30 +228,57 @@ void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_
         white->next = NULL;
     }
 }
-void deletelector(T_Elector * head, long cin_num)
+
+void deletelector(T_Elector *head, long cin_num)
 {
     T_Elector ptr_to_deleting_voter = *head;
-
-    if(ptr_to_deleting_voter->cin_num == cin_num)
+    if (ptr_to_deleting_voter->cin_num == cin_num)
     {
         (*head) = ptr_to_deleting_voter->next;
         free(ptr_to_deleting_voter);
         return;
     }
-
     T_Elector deleting_voter = ptr_to_deleting_voter->next;
-    
     while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
     {
         ptr_to_deleting_voter = ptr_to_deleting_voter->next;
         deleting_voter = ptr_to_deleting_voter->next;
     }
-    
-    if(deleting_voter == NULL)
+    if (deleting_voter == NULL)
     {
         return;
     }
-
     ptr_to_deleting_voter->next = deleting_voter->next;
     free(deleting_voter);
+}
+
+
+void sortlist(T_Elector head)
+{
+    T_Elector voter = head;
+    long tempVal;
+    int swapped = 1;
+    if (voter == NULL)
+    {
+        printf("Your list doesn't exist\n");
+    }
+    else
+    {
+        while (swapped)
+        {
+            swapped = 0;
+            voter = head;
+            while (voter->next != NULL)
+            {
+                if (voter->cin_num > voter->next->cin_num)
+                {
+                    tempVal = voter->cin_num;
+                    voter->cin_num = voter->next->cin_num;
+                    voter->next->cin_num = tempVal;
+                    swapped = 1;
+                }
+                voter = voter->next;
+            }
+        }
+    }
 }
