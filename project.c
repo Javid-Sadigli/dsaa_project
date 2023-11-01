@@ -13,11 +13,23 @@ typedef elector* T_Elector;
 
 T_Elector creationelector();
 T_Elector creation_T_Elector_Linked_List();
+void displaylist(T_Elector head);
 
 int main(int argc, char const *argv[])
 {
     T_Elector head= creation_T_Elector_Linked_List();
+    displaylist(head);
     return 0;
+}
+void displaylist(T_Elector head)
+{
+    printf("\nHead -> ");
+    while (head != NULL)
+    {
+        printf("{Name : %s, ID number : %ld, Choice : %d} -> ", head->name, head->cin_num, head->choice);
+        head = head->next;
+    }
+    printf("NULL\n");
 }
 
 T_Elector creationelector()
