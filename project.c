@@ -15,31 +15,21 @@ typedef elector *T_Elector;
 
 // Function prototypes
 T_Elector creationelector();
-
 T_Elector creation_T_Elector_Linked_List();
-
 T_Elector insertSorted(T_Elector head, T_Elector newVoter);
-
 void displaylist(T_Elector head);
-
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice);
-
 int alphaOrder(const char *name1, const char *name2);
-
 void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite);
-
 int countelector(T_Elector head);
-
 int findelector(T_Elector head, long cin_num);
-
 void deletelector(T_Elector *head, long cin_num);
-
 void sortlist(T_Elector head);
 void freelist(T_Elector head);
-
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
-
 int countLR(T_Elector headLeft);
+T_Elector allocate_for_elector();
+
 
 int main(int argc, char const *argv[])
 {
@@ -56,13 +46,15 @@ int main(int argc, char const *argv[])
     //displaylist(headRight);
     sortlist(headLeft);
     //displaylist(headLeft);
+    printf("\nHead :");
     displaylist(head);
-    //freelist(head);
-    printf("Freed list : \n");
-    displaylist(head);
+    printf("\nLeft :");
     displaylist(headLeft);
+    printf("\nRight : ");
     displaylist(headRight);
+    printf("\nWhite :");
     displaylist(headWhite);
+
     freelist(head);
     printf("Freed list : \n");
     displaylist(head); 
@@ -72,17 +64,24 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void freelist(T_Elector head)
+T_Elector allocate_for_elector()
 {
-    T_Elector deleting_voter = head;
-    while (deleting_voter->next != NULL)
-    {
-        head = head->next;
-        free(deleting_voter);
-        deleting_voter = head;
-    }
-    free(deleting_voter);
+    T_Elector elector = (T_Elector)malloc(sizeof(T_Elector));
+    elector->next = NULL;
+    return elector;
 }
+
+void freelist(T_Elector list)
+{
+    T_Elector temp;
+    while (list != NULL)
+    {
+        temp = list;
+        list = list->next;
+        free(temp);
+    }
+}
+
 
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 {
@@ -188,68 +187,80 @@ int findelector(T_Elector head, long cin_num)
     return 0;
 }
 
-
-void decomposelist(T_Elector head, T_Elector *headLeft, T_Elector *headRight, T_Elector *headWhite)
+void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *rightList, T_Elector *whiteList)
 {
-    T_Elector voter = head;
-    T_Elector left = NULL;
-    T_Elector right = NULL;
-    T_Elector white = NULL;
-    while (voter != NULL)
+    // Initialize the sub-lists to NULL initially.
+    *leftList = NULL;
+    *rightList = NULL;
+    *whiteList = NULL;
+
+    T_Elector leftTail = NULL;
+    T_Elector rightTail = NULL;
+    T_Elector whiteTail = NULL;
+
+    T_Elector current = originalList;
+
+    while (current != NULL)
     {
-        if (voter->choice == 1 || voter->choice == 3)
+        // Create a new node for the sub-list.
+        T_Elector newNode = (T_Elector)malloc(sizeof(elector));
+        if (newNode == NULL)
         {
-            if (*headLeft == NULL)
+            fprintf(stderr, "Memory allocation failed.\n");
+            exit(1); // Handle memory allocation failure as needed.
+        }
+
+        // Copy the data from the original list node.
+        strcpy(newNode->name, current->name);
+        newNode->cin_num = current->cin_num;
+        newNode->choice = current->choice;
+        newNode->next = NULL;
+
+        if (current->choice == 1 || current->choice == 3)
+        {
+            // Add to the left list.
+            if (*leftList == NULL)
             {
-                *headLeft = voter;
-                left = voter;
+                *leftList = newNode;
+                leftTail = newNode;
             }
             else
             {
-                left->next = voter;
-                left = voter;
+                leftTail->next = newNode;
+                leftTail = newNode;
             }
         }
-        else if (voter->choice == 2 || voter->choice == 4)
+        else if (current->choice == 2 || current->choice == 4)
         {
-            if (*headRight == NULL)
+            // Add to the right list.
+            if (*rightList == NULL)
             {
-                *headRight = voter;
-                right = voter;
+                *rightList = newNode;
+                rightTail = newNode;
             }
             else
             {
-                right->next = voter;
-                right = voter;
+                rightTail->next = newNode;
+                rightTail = newNode;
             }
         }
         else
         {
-            if (*headWhite == NULL)
+            // Add to the white list.
+            if (*whiteList == NULL)
             {
-                *headWhite = voter;
-                white = voter;
+                *whiteList = newNode;
+                whiteTail = newNode;
             }
             else
             {
-                white->next = voter;
-                white = voter;
+                whiteTail->next = newNode;
+                whiteTail = newNode;
             }
         }
-        voter = voter->next;
-    }
 
-    if (left != NULL)
-    {
-        left->next = NULL;
-    }
-    if (right != NULL)
-    {
-        right->next = NULL;
-    }
-    if (white != NULL)
-    {
-        white->next = NULL;
+        // Move to the next node in the original list.
+        current = current->next;
     }
 }
 
@@ -342,3 +353,4 @@ int countLR(T_Elector headLeft)
     }
     return countLeftVoter;
 }
+
