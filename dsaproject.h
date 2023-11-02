@@ -1,14 +1,9 @@
 
-#ifndef DSAA_PROJECT_DSAPROJECT_H
-#define DSAA_PROJECT_DSAPROJECT_H
-#endif //DSAA_PROJECT_DSAPROJECT_H
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#ifndef DSAPROJECT_H
+#define DSAPROJECT_H
 
 #define MAX_NAME_SIZE 100
+
 typedef struct elector
 {
     char name[MAX_NAME_SIZE];
@@ -19,7 +14,6 @@ typedef struct elector
 
 typedef elector *T_Elector;
 
-// Function prototypes
 T_Elector creationelector();
 
 T_Elector creation_T_Elector_Linked_List();
@@ -47,3 +41,5 @@ void freelist(T_Elector head);
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
 
 int countLR(T_Elector headLeft);
+
+#endif

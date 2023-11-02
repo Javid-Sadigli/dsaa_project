@@ -1,5 +1,4 @@
 #include "dsaproject.h"
-#include "project.c"
 
 int main(int argc, char const *argv[])
 {
