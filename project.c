@@ -28,38 +28,10 @@ void sortlist(T_Elector head);
 void freelist(T_Elector head);
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
 int countLR(T_Elector headLeft);
-T_Elector allocate_for_elector();
-
 
 int main(int argc, char const *argv[])
 {
-    T_Elector head = creation_T_Elector_Linked_List();
-    displaylist(head);
-    T_Elector headRight = NULL;
-    T_Elector headLeft = NULL;
-    T_Elector headWhite = NULL;
-    decomposelist(head, &headLeft, &headRight, &headWhite);
-    sortlist(head);
-    sortlist(headWhite);
-    //displaylist(headWhite);
-    sortlist(headRight);
-    //displaylist(headRight);
-    sortlist(headLeft);
-    //displaylist(headLeft);
-    printf("\nHead :");
-    displaylist(head);
-    printf("\nLeft :");
-    displaylist(headLeft);
-    printf("\nRight : ");
-    displaylist(headRight);
-    printf("\nWhite :");
-    displaylist(headWhite);
-    freelist(head);
-    printf("Freed list : \n");
-    displaylist(head); 
-    printf("\n");
-    //printf("You have %d voters\n", countelector(head));
-    //printf("%d", findelector(head, 1));
+    
     return 0;
 }
 
