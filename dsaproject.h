@@ -3,6 +3,7 @@
 #define DSAPROJECT_H
 
 #define MAX_NAME_SIZE 100
+#include <stdlib.h>
 
 typedef struct elector
 {
@@ -40,6 +41,6 @@ void freelist(T_Elector head);
 
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
 
-int countLR(T_Elector headLeft);
+int countLR(T_Elector mergedList);
 
 #endif

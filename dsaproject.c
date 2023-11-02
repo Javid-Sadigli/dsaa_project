@@ -30,13 +30,15 @@ void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 
 void displaylist(T_Elector head)
 {
-    printf("\nHead -> ");
+    printf("\nThe list of voters : ");
+    int count = 1;
     while (head != NULL)
     {
-        printf("{Name : %s, ID number : %ld, Choice : %d} -> ", head->name, head->cin_num, head->choice);
+        printf("\n%d)Name : %s, ID number : %ld, Choice : %d ", count ,head->name, head->cin_num, head->choice);
         head = head->next;
+        count++;
     }
-    printf("NULL\n");
+    printf("\n\n");
 }
 
 T_Elector creationelector()
@@ -114,7 +116,7 @@ int findelector(T_Elector head, long cin_num)
     {
         if (voter->cin_num == cin_num)
         {
-            printf("{Name : %s, ID number : %ld, Choice : %d} -> ", voter->name, voter->cin_num, voter->choice);
+            printf("Name : %s, ID number : %ld, Choice : %d\n", voter->name, voter->cin_num, voter->choice);
             return 1;
         }
         voter = voter->next;
@@ -295,9 +297,9 @@ T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
 }
 
 
-int countLR(T_Elector headLeft)
+int countLR(T_Elector mergedList)
 {
-    T_Elector voter = headLeft;
+    T_Elector voter = mergedList;
     int countLeftVoter = 0;
     while (voter != NULL)
     {
