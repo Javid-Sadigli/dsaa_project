@@ -38,13 +38,20 @@ void displaylist(T_Elector head)
     printf("\n\n");
 }
 //creationelector function creates and returns a voter.
-T_Elector creationelector()
+T_Elector creationelector(T_Elector head)
 {
+    long cin_num;
     T_Elector voter = (T_Elector) malloc(sizeof(elector));
     printf("\nEnter the new voter's name: ");
     scanf("%s", voter->name);
     printf("Enter the new voter's ID number: ");
-    scanf("%ld", &(voter->cin_num));
+    scanf("%ld", &cin_num);
+    while (findelector(head, cin_num))
+    {
+        printf("This user has the same ID. Please enter another ID : ");
+        scanf("%ld", &cin_num);
+    }
+    voter->cin_num = cin_num;
     printf("The options for new voter's choice are as below: \n");
     printf("NAME1: 1\n");
     printf("NAME2: 2\n");
@@ -66,7 +73,7 @@ T_Elector creation_T_Elector_Linked_List()
     scanf("%d", &number_of_voters);
     for (int i = 0; i < number_of_voters; i++)
     {
-        newVoter = creationelector();
+        newVoter = creationelector(head);
         head = insertSorted(head, newVoter);
     }
     return head;
@@ -114,12 +121,11 @@ int findelector(T_Elector head, long cin_num)
     {
         if (voter->cin_num == cin_num)
         {
-            printf("Name : %s, ID number : %ld, Choice : %d\n", voter->name, voter->cin_num, voter->choice);
+            printf("Name : %s, ID number : %ld, Choice : %d.", voter->name, voter->cin_num, voter->choice);
             return 1;
         }
         voter = voter->next;
     }
-    printf("Voter does not exist in the list\n");
     return 0;
 }
 //decomposelist splits the k=original list into 3 lists while maintaining the original.
@@ -192,20 +198,21 @@ void deletelector(T_Elector *head, long cin_num)
     {
         (*head) = ptr_to_deleting_voter->next;
         free(ptr_to_deleting_voter);
-        return;
     }
-    T_Elector deleting_voter = ptr_to_deleting_voter->next;
-    while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
+    else
     {
-        ptr_to_deleting_voter = ptr_to_deleting_voter->next;
-        deleting_voter = ptr_to_deleting_voter->next;
+        T_Elector deleting_voter = ptr_to_deleting_voter->next;
+        while (deleting_voter->cin_num != cin_num && deleting_voter != NULL)
+        {
+            ptr_to_deleting_voter = ptr_to_deleting_voter->next;
+            deleting_voter = ptr_to_deleting_voter->next;
+        }
+        if (deleting_voter != NULL)
+        {
+            ptr_to_deleting_voter->next = deleting_voter->next;
+            free(deleting_voter);
+        }
     }
-    if (deleting_voter == NULL)
-    {
-        return;
-    }
-    ptr_to_deleting_voter->next = deleting_voter->next;
-    free(deleting_voter);
 }
 
 //sortlist sorts the list by ID numbers.

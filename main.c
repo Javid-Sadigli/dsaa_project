@@ -1,6 +1,5 @@
 //inclusion of headers.
 #include "dsaproject.h"
-#include<stdbool.h>
 //main function.
 int main(int argc, char const *argv[])
 {
@@ -14,22 +13,24 @@ int main(int argc, char const *argv[])
     T_Elector headWhite = NULL;
     T_Elector mergedHead = NULL;
     T_Elector newElector = NULL;
+
+    printf("\n");
     while (continues)
     {
         //label
         input:
-        printf("Press 1 to create the list of voters.\n");
-        printf("Press 2 to add a new voter.\n");
-        printf("Press 3 to delete a voter.\n");
-        printf("Press 4 to search for a voter.\n");
-        printf("Press 5 to display the list of voters.\n");
-        printf("Press 6 to calculate the number of voters.\n");
-        printf("Press 7 to split,sort and merge the main list of voters.\n");
-        printf("Press 8 to calculate the percentages of the merged list.\n");
-        printf("Press 9 to free the memory.\n");
-        printf("Press 10 to quit.\n");
+        printf("Choose 1 to create the list of voters.\n");
+        printf("Choose 2 to add a new voter.\n");
+        printf("Choose 3 to delete a voter.\n");
+        printf("Choose 4 to search for a voter.\n");
+        printf("Choose 5 to display the list of voters.\n");
+        printf("Choose 6 to calculate the number of voters.\n");
+        printf("Choose 7 to split,sort and merge the main list of voters.\n");
+        printf("Choose 8 to calculate the percentages of the merged list.\n");
+        printf("Choose 9 to free the memory.\n");
+        printf("Choose 10 to quit.\n");
+        printf("Enter your choice : ");
         scanf("%d", &input);
-        printf("\n");
         //switch case for the input
         switch (input)
         {
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[])
                 break;
             case 2:
                 printf("\nNow, please enter the new voter :");
-                newElector = creationelector();
+                newElector = creationelector(head);
                 addelector(&head, newElector->name, newElector->cin_num, newElector->choice);
                 printf("\n");
                 break;
@@ -55,8 +56,11 @@ int main(int argc, char const *argv[])
                 printf("\nNow, please enter the ID number to find a voter : ");
                 scanf("%ld", &id);
                 printf("The voter with ID %ld is : \n", id);
-                findelector(head, id);
-                printf("\n");
+                if(!findelector(head, id))
+                {
+                    printf("Voter does not exist in the list");
+                };
+                printf("\n\n");
                 break;
             case 5:
                 displaylist(head);
@@ -102,14 +106,16 @@ int main(int argc, char const *argv[])
                 }
                 break;
             case 9:
+                printf("\n");
                 freelist(&head);
                 freelist(&headLeft);
                 freelist(&headRight);
                 freelist(&headWhite);
                 freelist(&mergedHead);
+                printf("\n");
                 break;
             case 10:
-                printf("\nThank you!\n");
+                printf("\nThank you!\n\n");
                 continues = false;
                 break;
             default:
