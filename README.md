@@ -1,6 +1,7 @@
-# dsaa_project
+# Data Structure and Algorithms course
+## Elector Management project
 
-## For running the project, type the following commands : 
+### For running the project, type the following commands : 
 * gcc -o dsaproject dsaproject.c main.c
 * ./dsaproject
 
