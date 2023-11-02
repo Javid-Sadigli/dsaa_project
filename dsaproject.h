@@ -1,10 +1,14 @@
-
+//preprocessor instructions.
 #ifndef DSAPROJECT_H
 #define DSAPROJECT_H
-
+//macro constant definition.
 #define MAX_NAME_SIZE 100
+//library inclusions.
 #include <stdlib.h>
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//struct elector definition.
 typedef struct elector
 {
     char name[MAX_NAME_SIZE];
@@ -12,9 +16,10 @@ typedef struct elector
     int choice;
     struct elector *next;
 } elector;
-
+//renaming elector*.
 typedef elector *T_Elector;
 
+//function declarations.
 T_Elector creationelector();
 
 T_Elector creation_T_Elector_Linked_List();
@@ -37,7 +42,7 @@ void deletelector(T_Elector *head, long cin_num);
 
 void sortlist(T_Elector head);
 
-void freelist(T_Elector head);
+void freelist(T_Elector *head);
 
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight);
 

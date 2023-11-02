@@ -1,24 +1,20 @@
-
+//including our header.
 #include "dsaproject.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-typedef elector *T_Elector;
-
-void freelist(T_Elector head)
+//freelist function frees the linked lists.
+void freelist(T_Elector *head)
 {
-    T_Elector voter=head;
-    T_Elector temp=head;
-    while (temp != NULL)
+    T_Elector current = *head;
+    while (current != NULL)
     {
-        voter = temp;
-        temp = temp->next;
-        free(voter);
+        T_Elector temp = current;
+        current = current->next;
+        free(temp);
     }
+    *head = NULL;
+    printf("The memory is freed.\n");
 }
-
-
+//addelector function adds a newVoter to a linked list.
 void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 {
     T_Elector newVoter = (T_Elector) malloc(sizeof(elector));
@@ -27,20 +23,21 @@ void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
     newVoter->cin_num = cin_num;
     *ptr_to_head = insertSorted(*ptr_to_head, newVoter);
 }
-
+//displaylist function displays the linked list.
 void displaylist(T_Elector head)
 {
+    T_Elector voter=head;
     printf("\nThe list of voters : ");
     int count = 1;
-    while (head != NULL)
+    while (voter != NULL)
     {
-        printf("\n%d)Name : %s, ID number : %ld, Choice : %d ", count ,head->name, head->cin_num, head->choice);
-        head = head->next;
+        printf("\n%d)Name : %s, ID number : %ld, Choice : %d ", count ,voter->name, voter->cin_num, voter->choice);
+        voter = voter->next;
         count++;
     }
     printf("\n\n");
 }
-
+//creationelector function creates and returns a voter.
 T_Elector creationelector()
 {
     T_Elector voter = (T_Elector) malloc(sizeof(elector));
@@ -59,7 +56,7 @@ T_Elector creationelector()
     voter->next = NULL;
     return voter;
 }
-
+//creation_T_Elector_Linked_List function creates a linked list and returns its head.
 T_Elector creation_T_Elector_Linked_List()
 {
     T_Elector head = NULL;
@@ -74,7 +71,7 @@ T_Elector creation_T_Elector_Linked_List()
     }
     return head;
 }
-
+//insertSorted function is defined by us. This function allows us to insert a new voter in sorted order and returns the head after sorting.
 T_Elector insertSorted(T_Elector head, T_Elector newVoter)
 {
     if (head == NULL || alphaOrder(newVoter->name, head->name) < 0)
@@ -91,12 +88,13 @@ T_Elector insertSorted(T_Elector head, T_Elector newVoter)
     current->next = newVoter;
     return head;
 }
-
+//alphaOrder is defined by us. This function checks the alphabetical order of 2 strings.
+// If the return value is positive it means name1 and name 2 are not sorted.
 int alphaOrder(const char *name1, const char *name2)
 {
     return strcmp(name1, name2);
 }
-
+//countelector counts the number of voters in a list.
 int countelector(T_Elector head)
 {
     T_Elector voter = head;
@@ -108,7 +106,7 @@ int countelector(T_Elector head)
     }
     return count;
 }
-
+//findelector searches for a voter in the list by their ID number and returns 1 if found 0 if not found.
 int findelector(T_Elector head, long cin_num)
 {
     T_Elector voter = head;
@@ -124,7 +122,7 @@ int findelector(T_Elector head, long cin_num)
     printf("Voter does not exist in the list\n");
     return 0;
 }
-
+//decomposelist splits the k=original list into 3 lists while maintaining the original.
 void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *rightList, T_Elector *whiteList)
 {
     // Initialize the sub-lists to NULL initially.
@@ -138,22 +136,14 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
     T_Elector current = originalList;
     while (current != NULL)
     {
-        // Create a new node for the sub-list.
         T_Elector newNode = (T_Elector) malloc(sizeof(elector));
-        if (newNode == NULL)
-        {
-            fprintf(stderr, "Memory allocation failed.\n");
-            exit(1); // Handle memory allocation failure as needed.
-        }
 
-        // Copy the data from the original list node.
         strcpy(newNode->name, current->name);
         newNode->cin_num = current->cin_num;
         newNode->choice = current->choice;
         newNode->next = NULL;
         if (current->choice == 1 || current->choice == 3)
         {
-            // Add to the left list.
             if (*leftList == NULL)
             {
                 *leftList = newNode;
@@ -167,7 +157,6 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
         }
         else if (current->choice == 2 || current->choice == 4)
         {
-            // Add to the right list.
             if (*rightList == NULL)
             {
                 *rightList = newNode;
@@ -181,7 +170,6 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
         }
         else
         {
-            // Add to the white list.
             if (*whiteList == NULL)
             {
                 *whiteList = newNode;
@@ -193,12 +181,10 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
                 whiteTail = newNode;
             }
         }
-
-        // Move to the next node in the original list.
         current = current->next;
     }
 }
-
+//deletelector deletes an elector in the list using their ID.
 void deletelector(T_Elector *head, long cin_num)
 {
     T_Elector ptr_to_deleting_voter = *head;
@@ -222,7 +208,7 @@ void deletelector(T_Elector *head, long cin_num)
     free(deleting_voter);
 }
 
-
+//sortlist sorts the list by ID numbers.
 void sortlist(T_Elector head)
 {
     T_Elector voter = head;
@@ -253,7 +239,7 @@ void sortlist(T_Elector head)
     }
 }
 
-
+//mergelists merges the left and right lists and returns the head of the new list.
 T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
 {
     T_Elector mergedList = NULL;
@@ -296,7 +282,7 @@ T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
     return mergedList;
 }
 
-
+//countLR returns the number of left voters in the merged list.
 int countLR(T_Elector mergedList)
 {
     T_Elector voter = mergedList;
