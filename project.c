@@ -1,9 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define MAX_NAME_SIZE 100
-typedef struct elector
+#include "dsaproject.h"
+
+extern void freelist(T_Elector head)
 {
     char name[MAX_NAME_SIZE];
     long cin_num;
@@ -41,14 +39,14 @@ void freelist(T_Elector head)
     T_Elector temp=head;
     while (temp != NULL)
     {
-        voter=temp;
+        voter = temp;
         temp = temp->next;
         free(voter);
     }
 }
 
 
-void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
+extern void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
 {
     T_Elector newVoter = (T_Elector) malloc(sizeof(elector));
     strcpy(newVoter->name, name);
@@ -57,7 +55,7 @@ void addelector(T_Elector *ptr_to_head, char name[], long cin_num, int choice)
     *ptr_to_head = insertSorted(*ptr_to_head, newVoter);
 }
 
-void displaylist(T_Elector head)
+extern void displaylist(T_Elector head)
 {
     printf("\nHead -> ");
     while (head != NULL)
@@ -68,7 +66,7 @@ void displaylist(T_Elector head)
     printf("NULL\n");
 }
 
-T_Elector creationelector()
+extern T_Elector creationelector()
 {
     T_Elector voter = (T_Elector) malloc(sizeof(elector));
     printf("\nEnter the new voter's name: ");
@@ -87,7 +85,7 @@ T_Elector creationelector()
     return voter;
 }
 
-T_Elector creation_T_Elector_Linked_List()
+extern T_Elector creation_T_Elector_Linked_List()
 {
     T_Elector head = NULL;
     T_Elector newVoter;
@@ -102,7 +100,7 @@ T_Elector creation_T_Elector_Linked_List()
     return head;
 }
 
-T_Elector insertSorted(T_Elector head, T_Elector newVoter)
+extern T_Elector insertSorted(T_Elector head, T_Elector newVoter)
 {
     if (head == NULL || alphaOrder(newVoter->name, head->name) < 0)
     {
@@ -119,12 +117,12 @@ T_Elector insertSorted(T_Elector head, T_Elector newVoter)
     return head;
 }
 
-int alphaOrder(const char *name1, const char *name2)
+extern int alphaOrder(const char *name1, const char *name2)
 {
     return strcmp(name1, name2);
 }
 
-int countelector(T_Elector head)
+extern int countelector(T_Elector head)
 {
     T_Elector voter = head;
     int count = 0;
@@ -136,7 +134,7 @@ int countelector(T_Elector head)
     return count;
 }
 
-int findelector(T_Elector head, long cin_num)
+extern int findelector(T_Elector head, long cin_num)
 {
     T_Elector voter = head;
     while (voter != NULL)
@@ -152,23 +150,21 @@ int findelector(T_Elector head, long cin_num)
     return 0;
 }
 
-void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *rightList, T_Elector *whiteList)
+extern void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *rightList, T_Elector *whiteList)
 {
     // Initialize the sub-lists to NULL initially.
     *leftList = NULL;
     *rightList = NULL;
     *whiteList = NULL;
-
     T_Elector leftTail = NULL;
     T_Elector rightTail = NULL;
     T_Elector whiteTail = NULL;
 
     T_Elector current = originalList;
-
     while (current != NULL)
     {
         // Create a new node for the sub-list.
-        T_Elector newNode = (T_Elector)malloc(sizeof(elector));
+        T_Elector newNode = (T_Elector) malloc(sizeof(elector));
         if (newNode == NULL)
         {
             fprintf(stderr, "Memory allocation failed.\n");
@@ -180,7 +176,6 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
         newNode->cin_num = current->cin_num;
         newNode->choice = current->choice;
         newNode->next = NULL;
-
         if (current->choice == 1 || current->choice == 3)
         {
             // Add to the left list.
@@ -229,7 +224,7 @@ void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *right
     }
 }
 
-void deletelector(T_Elector *head, long cin_num)
+extern void deletelector(T_Elector *head, long cin_num)
 {
     T_Elector ptr_to_deleting_voter = *head;
     if (ptr_to_deleting_voter->cin_num == cin_num)
@@ -253,7 +248,7 @@ void deletelector(T_Elector *head, long cin_num)
 }
 
 
-void sortlist(T_Elector head)
+extern void sortlist(T_Elector head)
 {
     T_Elector voter = head;
     long tempVal;
@@ -284,9 +279,13 @@ void sortlist(T_Elector head)
 }
 
 
-T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
+extern T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
 {
+    T_Elector mergedList = NULL;
+    T_Elector *current = &mergedList;
+
     T_Elector voterLeft = headLeft;
+    T_Elector voterRight = headRight;
     if (headLeft == NULL || headRight == NULL)
     {
         printf("At least one of your lists doesn't exist\n");
@@ -294,17 +293,36 @@ T_Elector mergelists(T_Elector headLeft, T_Elector headRight)
     }
     else
     {
-        while (voterLeft->next != NULL)
+        while (voterLeft != NULL && voterRight != NULL)
         {
-            voterLeft = voterLeft->next;
+            T_Elector mergedElement;
+            if (voterLeft->cin_num < voterRight->cin_num)
+            {
+                mergedElement = voterLeft;
+                voterLeft = voterLeft->next;
+            }
+            else
+            {
+                mergedElement = voterRight;
+                voterRight = voterRight->next;
+            }
+            *current = mergedElement;
+            current = &(mergedElement->next);
         }
-        voterLeft->next = headRight;
+        if (voterLeft != NULL)
+        {
+            *current = voterLeft;
+        }
+        else if (voterRight != NULL)
+        {
+            *current = voterRight;
+        }
     }
-    sortlist(headLeft);
-    return headLeft;
+    return mergedList;
 }
 
-int countLR(T_Elector headLeft)
+
+extern int countLR(T_Elector headLeft)
 {
     T_Elector voter = headLeft;
     int countLeftVoter = 0;
@@ -318,4 +336,3 @@ int countLR(T_Elector headLeft)
     }
     return countLeftVoter;
 }
-
