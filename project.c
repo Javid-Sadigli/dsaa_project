@@ -63,14 +63,15 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void freelist(T_Elector list)
+void freelist(T_Elector head)
 {
-    T_Elector temp;
-    while (list != NULL)
+    T_Elector voter=head;
+    T_Elector temp=head;
+    while (temp != NULL)
     {
-        temp = list;
-        list = list->next;
-        free(temp);
+        voter=temp;
+        temp = temp->next;
+        free(voter);
     }
 }
 
