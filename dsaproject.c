@@ -4,14 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void freelist(T_Elector head)
-{
-    char name[MAX_NAME_SIZE];
-    long cin_num;
-    int choice;
-    struct elector *next;
-} elector;
-
 typedef elector *T_Elector;
 
 void freelist(T_Elector head)
