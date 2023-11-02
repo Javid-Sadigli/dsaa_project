@@ -54,7 +54,6 @@ int main(int argc, char const *argv[])
     displaylist(headRight);
     printf("\nWhite :");
     displaylist(headWhite);
-
     freelist(head);
     printf("Freed list : \n");
     displaylist(head); 
@@ -62,13 +61,6 @@ int main(int argc, char const *argv[])
     //printf("You have %d voters\n", countelector(head));
     //printf("%d", findelector(head, 1));
     return 0;
-}
-
-T_Elector allocate_for_elector()
-{
-    T_Elector elector = (T_Elector)malloc(sizeof(T_Elector));
-    elector->next = NULL;
-    return elector;
 }
 
 void freelist(T_Elector list)
