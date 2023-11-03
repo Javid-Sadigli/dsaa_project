@@ -46,9 +46,10 @@ T_Elector creationelector(T_Elector head)
     scanf("%s", voter->name);
     printf("Enter the new voter's ID number: ");
     scanf("%ld", &cin_num);
+    printf("\n");
     while (findelector(head, cin_num))
     {
-        printf("This user has the same ID. Please enter another ID : ");
+        printf("\nThis user has the same ID. Please enter another ID : ");
         scanf("%ld", &cin_num);
     }
     voter->cin_num = cin_num;
