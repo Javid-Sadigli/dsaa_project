@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 //struct elector definition.
 typedef struct elector
 {
@@ -20,7 +21,7 @@ typedef struct elector
 typedef elector *T_Elector;
 
 //function declarations.
-T_Elector creationelector();
+T_Elector creationelector(T_Elector head);
 
 T_Elector creation_T_Elector_Linked_List();
 
