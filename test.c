@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
                 break;
             case 2:
                 printf("\nNow, please enter the new voter :");
-                newElector = creationelector();
+                newElector = creationelector(head);
                 addelector(&head, newElector->name, newElector->cin_num, newElector->choice);
                 printf("\n");
                 break;
