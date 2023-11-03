@@ -7,6 +7,8 @@ int main(int argc, char const *argv[])
     long id;
     int countmerged, countleft, countright, input;
     bool continues = true;
+    bool continues2 = true;
+    char c;
     T_Elector head = NULL;
     T_Elector headLeft = NULL;
     T_Elector headRight = NULL;
@@ -19,7 +21,7 @@ int main(int argc, char const *argv[])
     {
         //label
         input:
-        printf("Choose 1 to create the list of voters.\n");
+        printf("\nChoose 1 to create the list of voters.\n");
         printf("Choose 2 to add a new voter.\n");
         printf("Choose 3 to delete a voter.\n");
         printf("Choose 4 to search for a voter.\n");
@@ -70,21 +72,52 @@ int main(int argc, char const *argv[])
                 printf("For now, there are %d voters in your list.\n\n", countelector(head));
                 break;
             case 7:
-                decomposelist(head, &headLeft, &headRight, &headWhite);
-                sortlist(headLeft);
-                sortlist(headRight);
-                sortlist(headWhite);
-                printf("Left voters :");
-                printf("\n");
-                displaylist(headLeft);
-                printf("Right voters :");
-                printf("\n");
-                displaylist(headRight);
-                printf("White voters :");
-                printf("\n");
-                displaylist(headWhite);
-                mergedHead = mergelists(headLeft, headRight);
-                printf("\n");
+                continues2 = true;
+                while (continues2)
+                {
+                    printf("\nChoose 'a' to split and sort the list into 3 sublists\n");
+                    printf("Choose 'b' to display the sublists\n");
+                    printf("Choose 'c' to merge two sublists\n");
+                    printf("Choose 'q' to quit\n");
+                    printf("Enter your choice : ");
+                    scanf(" %c", &c);
+                    switch (c)
+                    {
+                        case 'a':
+                            decomposelist(head, &headLeft, &headRight, &headWhite);
+                            sortlist(headLeft);
+                            sortlist(headRight);
+                            sortlist(headWhite);
+                            printf("Lists split and sorted.\n");
+                            break;
+                        case 'b':
+                            printf("Left voters:\n");
+                            displaylist(headLeft);
+                            printf("Right voters:\n");
+                            displaylist(headRight);
+                            printf("White voters:\n");
+                            displaylist(headWhite);
+                            break;
+                        case 'c':
+                            if (headLeft == NULL || headRight == NULL)
+                            {
+                                printf("Atleast one of the lists is emptyq"
+                                       ".\n");
+                            }
+                            else
+                            {
+                                mergedHead = mergelists(headLeft, headRight);
+                                printf("Lists merged.\n");
+                            }
+                            break;
+                        case 'q':
+                            continues2 = false;
+                            break;
+                        default:
+                            printf("Invalid character. Please enter a valid input.\n");
+                            break;
+                    }
+                }
                 break;
             case 8:
                 countmerged = countelector(mergedHead);
