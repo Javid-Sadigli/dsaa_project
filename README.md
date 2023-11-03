@@ -30,7 +30,7 @@ This function’s prototype was changed by adding one more parameter: T_Elector 
 The complexity of each implemented function was decribed briefly below : 
 
 * **T_Elector creationelector():**  O(1) - Constant time complexity for creating a single elector.
-* **T_Elector creation_T_Elector_Linked_List():** O(n) - Linear time complexity for creating a linked list of n electors.
+* **T_Elector creation_T_Elector_Linked_List():** O(n^2) - Linear time complexity for creating a linked list of n electors.
 * **void freelist(T_Elector head):** O(n) - Linear time complexity for freeing memory for n electors.
 * **int findelector(T_Elector head, long cin_num):** O(n) - Linear time complexity for searching the list for an elector.
 * **void decomposelist(T_Elector originalList, T_Elector *leftList, T_Elector *rightList, T_Elector *whiteList):** O(n) - Linear time complexity for decomposing the list into three sub-lists.
