@@ -2,8 +2,10 @@
 ## Elector Management project
 
 ### For running the project, type the following commands : 
-* gcc -o dsaproject dsaproject.c main.c
-* ./dsaproject
+```
+gcc -o dsaproject dsaproject.c main.c
+./dsaproject
+```
 
 ### Introduction
 The Elector Management Program is a C-based project designed to manage a list of electors. The program allows users to create, modify, and manipulate the list of electors based on their names, ID numbers, and choices. This report will provide an overview of the program's architecture, discuss the implemented functions, and analyze the complexity of each function.
